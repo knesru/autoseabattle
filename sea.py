@@ -2,7 +2,7 @@ from random import randint
 
 
 class Cell:
-    def __init__(self, x, y, content, sea):
+    def __init__(self, x, y, content, sea=None):
         self.x = x
         self.y = y
         self.content = content
@@ -58,8 +58,8 @@ class Sea:
         for i in range(self.width):
             row = []
             for j in range(self.height):
-                # row.append(Cell(i, j, self.WATER, self))
-                row.append(Cell(i, j, randint(0, 4), self))
+                row.append(Cell(i, j, self.WATER, self))
+                # row.append(Cell(i, j, randint(0, 4), self))
             self.cells.append(row)
 
     def get_cell(self, x, y)->Cell:
