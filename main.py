@@ -8,15 +8,27 @@ class Cell:
         self.content = content
         self.sea = sea
 
-    def get_sib(self):
+    def get_siblings(self):
         siblings = (
             (-1, -1), (0, -1), (0, 1),
             (-1, 0), (1, 0),
             (-1, 1), (0, 1), (1, 1),
         )
-        sibCells = []
+        sib_cells = []
         for displacement in siblings:
-            sibCells = self.sea.getCell
+            cell = self.get_neighbour(displacement)
+            if cell:
+                sib_cells.append(cell)
+        return sib_cells
+
+    def get_neighbour(self, displacement):
+        newx = self.x + displacement[0]
+        if newx < 0 or newx >= self.sea.width:
+            return None
+        newy = self.y + displacement[1]
+        if newy < 0 or newy >= self.sea.height:
+            return None
+        return self.sea.get_cell(newx, newy)
 
     def __str__(self):
         types = [" ", "#", "•", "×"]
@@ -42,18 +54,18 @@ class Sea:
                 row.append(Cell(i, j, randint(0, 4), self))
             self.cells.append(row)
 
-    def get_sell(self, x, y):
+    def get_cell(self, x, y):
         return self.cells[x][y]
 
     def __str__(self):
         ret = "   "
         for i in range(self.width):
-            ret += chr(ord("a")+i)+" "
+            ret += chr(ord("a") + i) + " "
         ret += "\n"
         for i in range(self.width):
-            ret += str(i+1).rjust(2, ' ')+" "
+            ret += str(i + 1).rjust(2, ' ') + " "
             for j in range(self.height):
-                ret += str(self.get_sell(j, i))+' '
+                ret += str(self.get_cell(j, i)) + ' '
             ret += "\n"
         return ret
 
