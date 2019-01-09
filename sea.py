@@ -68,8 +68,3 @@ class Sea:
                 ret += str(self.get_cell(j, i)) + ' '
             ret += "\n"
         return ret
-
-
-sea = Sea(10, 10)
-
-print(sea)
