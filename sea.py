@@ -36,7 +36,7 @@ class Cell:
             return "?"
         return types[self.content]
 
-    def boom(self)->int:
+    def boom(self) -> int:
         if self.content == self.sea.WATER:
             self.content = self.sea.MISS
         if self.content == self.sea.SHIP:
@@ -50,6 +50,11 @@ class Sea:
     MISS = 2
     FIRE = 3
 
+    RES_NONE = -1
+    RES_HIT = 0
+    RES_MISS = 1
+    RES_SUNK = 2
+
     def __init__(self, width, height, is_visible):
         self.width = width
         self.height = height
@@ -62,7 +67,9 @@ class Sea:
                 # row.append(Cell(i, j, randint(0, 4), self))
             self.cells.append(row)
 
-    def get_cell(self, x, y)->Cell:
+    def get_cell(self, x, y) -> Cell:
+        if x < 0 or x >= len(self.cells) or y < 0 or y >= len(self.cells[x]):
+            raise IndexError('Out of sea!')
         return self.cells[x][y]
 
     def __str__(self):
@@ -77,16 +84,18 @@ class Sea:
             ret += "\n"
         return ret
 
-    def try_to_boom_cell(self, x, y):
+    def try_to_boom_cell(self, x, y)->int:
         if x >= self.width or x < 0:
-            return None
+            return self.RES_NONE
         if y >= self.height or y < 0:
-            return None
+            return self.RES_NONE
         boom_result = self.get_cell(x, y).boom()
         if boom_result == self.FIRE:
-            return True
+            return self.RES_HIT
         if boom_result == self.MISS:
-            return False
+            return self.RES_MISS
 
-    # def boom(self, x, y):
-    #     if self.try_to_boom_cell(x,y)==False:
+    def scan_cells(self):
+        for i in range(self.width):
+            for j in range(self.height):
+                yield self.get_cell(i, j)

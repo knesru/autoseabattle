@@ -6,13 +6,9 @@ class Player(player.Player):
     # todo: Реализовывать обязательно. Это метод, который на основании предыдущего хода должен выдать тюлип координат для следующего
     def turn(self, prev_result):
         self.process_result(prev_result)
-        if prev_result is None:
-            return 3, 3
-        if isinstance(prev_result, Cell):
-            for cell in self.other_sea.scan_cells():
-                if cell.content == Sea.WATER:
-                    return cell.x, cell.y
-            raise Exception('No more turns')
+        x = int(ord(input("X: ")) - ord('a') + 1)
+        y = int(input("Y: "))
+        return x, y
 
     def __init__(self):
         player.Player.__init__(self)
@@ -26,4 +22,4 @@ class Player(player.Player):
         try:
             self.other_sea.get_cell(result.x, result.y).content = result.content
         except IndexError:
-            return
+            pass
