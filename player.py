@@ -18,6 +18,8 @@ class Player:
         return self.my_sea.try_to_boom_cell(x, y)
 
     def place_ship(self, length, x, y, horizontal=True):
+        if length < 0 or length >= len(self.ships):
+            return False
         for i in range(length):
             if self.my_sea.get_cell(x, y) is None or self.my_sea.get_cell(x, y).content != Sea.WATER:
                 return False
@@ -32,8 +34,11 @@ class Player:
             x -= length
         else:
             y -= length
+        ship = Ship()
         for i in range(length):
             self.my_sea.get_cell(x, y).content = Sea.SHIP
+            self.my_sea.get_cell(x, y).ship = ship
+            ship.add_cell(self.my_sea.get_cell(x, y))
             if horizontal:
                 x += 1
             else:

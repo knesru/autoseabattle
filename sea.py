@@ -7,6 +7,7 @@ class Cell:
         self.y = y
         self.content = content
         self.sea = sea
+        self.ship = None
 
     def get_siblings(self):
         siblings = (
@@ -44,6 +45,20 @@ class Cell:
         return self.content
 
 
+class Ship:
+    def __init__(self):
+        self.cells = []
+
+    def add_cell(self, cell: Cell):
+        self.cells.append(cell)
+
+    def is_sunk(self):
+        for cell in self.cells:
+            if cell.content == Sea.SHIP:
+                return False
+        return True
+
+
 class Sea:
     WATER = 0
     SHIP = 1
@@ -51,8 +66,8 @@ class Sea:
     FIRE = 3
 
     RES_NONE = -1
-    RES_HIT = 0
-    RES_MISS = 1
+    RES_MISS = 0
+    RES_HIT = 1
     RES_SUNK = 2
 
     def __init__(self, width, height, is_visible):
@@ -84,13 +99,15 @@ class Sea:
             ret += "\n"
         return ret
 
-    def try_to_boom_cell(self, x, y)->int:
+    def try_to_boom_cell(self, x, y) -> int:
         if x >= self.width or x < 0:
             return self.RES_NONE
         if y >= self.height or y < 0:
             return self.RES_NONE
         boom_result = self.get_cell(x, y).boom()
         if boom_result == self.FIRE:
+            if self.get_cell(x, y).ship.is_sunk():
+                return self.RES_SUNK
             return self.RES_HIT
         if boom_result == self.MISS:
             return self.RES_MISS
