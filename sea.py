@@ -44,6 +44,18 @@ class Cell:
             self.content = self.sea.FIRE
         return self.content
 
+    def str_sib(self):
+        out = ''
+        i = 1
+        for c in self.get_siblings():
+            if i % 3 == 0:
+                out += '\n'
+            if i == 5:
+                out += ' '
+            out += c.__str__()
+            i += 1
+        return out
+
 
 class Ship:
     def __init__(self):

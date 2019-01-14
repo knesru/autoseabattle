@@ -14,8 +14,8 @@ class Player(player.Player):
                     return cell.x, cell.y
             raise Exception('No more turns')
 
-    def __init__(self):
-        player.Player.__init__(self)
+    def __init__(self, name='Example'):
+        player.Player.__init__(self, name)
 
     # todo: Можно не реализовывать. =)) Базовое размещение вполне норм. ГЫ.
     # def place_ships(self):

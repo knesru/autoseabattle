@@ -4,7 +4,8 @@ from sea import *
 
 
 class Player:
-    def __init__(self):
+    def __init__(self, name='player'):
+        self.name = name
         self.my_sea = Sea(Rules.width, Rules.height, True)
         self.other_sea = Sea(Rules.width, Rules.height, False)
         self.ships = Rules.ships
@@ -56,3 +57,11 @@ class Player:
         self.place_ship(1, 3, 5)
         self.place_ship(1, 5, 5)
         self.place_ship(1, 7, 5)
+
+    def __str__(self):
+        my_sea_arr = self.my_sea.__str__().split('\n')
+        other_sea_arr = self.other_sea.__str__().split('\n')
+        res = 'Name:'+self.name+'\n'
+        for row in range(len(my_sea_arr)):
+            res += my_sea_arr[row] + '\t|\t' + other_sea_arr[row] + '\n'
+        return res

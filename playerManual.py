@@ -7,8 +7,13 @@ class Player(player.Player):
     #  координат для следующего
     def turn(self, prev_result):
         self.process_result(prev_result)
-        x = int(ord(input("X: ")) - ord('a') + 1)
-        y = int(input("Y: "))
+        xy = input("D5:")
+        x = xy[0]
+        if ord(x)>ord('Z'):
+            x = ord(x)-ord('a')
+        else:
+            x = ord(x)-ord('A')
+        y = xy[1]
         return x, y
 
     def __init__(self):
